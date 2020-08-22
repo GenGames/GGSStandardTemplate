@@ -26,6 +26,11 @@ public class AchievementManager : MonoBehaviour
     public GameObject achievementBlockPrefab;
     public Transform achievementDisplayParent;
 
+    public Text achievementDisplayTitle;
+    public Text achievementDisplayDescription;
+    public Text achievementDisplayValue;
+    public Image achievementDisplayImage;
+    public GameObject achievementDisplay;
 
     public Achievement[] achievements;
 
@@ -66,6 +71,7 @@ public class AchievementManager : MonoBehaviour
             foreach (Achievement achievement in achievements)
             {
                 GameObject newAchievement = Instantiate(achievementBlockPrefab, achievementDisplayParent);
+                newAchievement.GetComponent<AchievementDisplayPrefab>().AssignMyAchievement(achievement);
                 Image achievementSprite = newAchievement.GetComponentsInChildren<Image>()[1]; //this will be the second one because the first Image it will grab will be the parent panel
 
 
@@ -82,6 +88,28 @@ public class AchievementManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ShowOneAchievement(Achievement achievement)
+    {
+        achievementDisplay.SetActive(true);
+        achievementDisplayDescription.text = achievement.description;
+        achievementDisplayTitle.text = achievement.name;
+        achievementDisplayValue.text = achievement.achievementScore +"";
+        
+        if (achievement.isUnlocked)
+        {
+            achievementDisplayImage.sprite = achievement.unlockedImage;
+        }
+        else
+        {
+            achievementDisplayImage.sprite = achievement.lockedImage;
+        }
+    }
+
+    public void TurnOffAchievementDisplay()
+    {
+        achievementDisplay.SetActive(false);
     }
 
     public void MadeAchievementProgress(string achievementName, int progress = 0)
