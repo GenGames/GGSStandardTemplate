@@ -22,7 +22,7 @@ public class Monologue_UI : MonoBehaviour
     public Text speakerNameUI;
     public Text dialogueUI;
     public int currentLineIndex;
-    public Scene newScene;
+    public string newScene;
 
     public bool utilizeImages;
     public Transform imageTarget;
@@ -115,7 +115,7 @@ public class Monologue_UI : MonoBehaviour
         }
         else
         {
-            GameManager.instance.GoToScene(newScene);
+            GameManager.instance.GoToSceneName(newScene);
         }
     }
 

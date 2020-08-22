@@ -1,18 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TitleMenuManager : MonoBehaviour
 {
-    
+    private Keyboard keyboard;
+
+    private void Start()
+    {
+        keyboard = InputSystem.GetDevice<Keyboard>();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (keyboard.escapeKey.wasPressedThisFrame)
         {
             Application.Quit();
-        }
-        if (Input.anyKeyDown)
+        } 
+        else if (keyboard.anyKey.wasPressedThisFrame)
         {
             GameManager.instance.GoToSceneName("LevelSelection");
         }

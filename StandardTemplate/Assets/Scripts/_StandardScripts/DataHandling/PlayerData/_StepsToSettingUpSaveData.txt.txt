@@ -1,0 +1,11 @@
+
+1. Add whatever variable you need in the PlayerData script
+* note that only traditional C# variable types can be saved. For nontradional/monobehavior variables, you will need to keep an array of options and use and index (or a string for a path) to grab the item in the player profile
+
+2. Add whatever variable you need in the PlayerProfile script, including any arrays for gameobjects and the like
+
+3. Add all of the save info to the constructor for the playerData in the playerdata scrip
+
+4. Add all of the save into to the load method for the PlayerProfile Script
+
+* Ensure that the playerProfile's achievementProgress Array length is the same length as the length of the Achievement Managers achievements array length

@@ -96,8 +96,15 @@ public class AudioManager : MonoBehaviour
     public AudioSource GetSource(string name)
     {
         SoundData sound = Array.Find(sounds, soundData => soundData.name == name);
-
-        return sound.source;
+        if (sound != null)
+        {
+            return sound.source;
+        }
+        else
+        {
+            Debug.LogError("no source detected when attempting to recieve the source");
+            return null;
+        }
     }
 }
 

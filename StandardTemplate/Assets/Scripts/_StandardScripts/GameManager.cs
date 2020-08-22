@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-
     #region Singleton
     public static GameManager instance;
 
@@ -24,42 +24,12 @@ public class GameManager : MonoBehaviour
     public GameObject pausedMenu;
     public bool isGamePaused;
     public bool doesMouseLockOnStart = true;
+    private Keyboard keyboard;
 
     private void Start()
     {
+        keyboard = InputSystem.GetDevice<Keyboard>();
         ToggleMouseOnOrOff(doesMouseLockOnStart);
-
-        if (SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "LevelSelection")
-        {
-            if (!AudioManager.instance.IsPlaying("MainMenuMusic"))
-            {
-                AudioManager.instance.Play("MainMenuMusic");
-            }
-            if (AudioManager.instance.IsPlaying("2DMusic"))
-            {
-                AudioManager.instance.Stop("2DMusic");
-            }
-            if (AudioManager.instance.IsPlaying("Music3D"))
-            {
-                AudioManager.instance.Stop("Music3D");
-            }
-
-        }
-        else
-        {
-            AudioManager.instance.Stop("MainMenuMusic");
-
-            if (!AudioManager.instance.IsPlaying("2DMusic"))
-            {
-                AudioManager.instance.Play("2DMusic");
-                AudioManager.instance.GetSource("2DMusic").volume = 0f;
-            }
-            if (!AudioManager.instance.IsPlaying("Music3D"))
-            {
-                AudioManager.instance.Play("Music3D");
-            }
-        }
-
         playData = PlayData.instance;
         if (pausedMenu != null)
         {
@@ -71,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (keyboard.escapeKey.wasPressedThisFrame)
         {
             TogglePause();
         }
@@ -89,7 +59,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0;
                 if (AudioManager.instance != null)
                 {
-                    AudioManager.instance.Play("PauseScreenSFX");
+                    
                 }
             }
             else
@@ -101,8 +71,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1;
                 if (AudioManager.instance != null)
                 {
-                    AudioManager.instance.Play("UnpauseSFX");
-                    AudioManager.instance.Stop("PauseScreenSFX");
+                    
                 }
             }
         }
@@ -119,14 +88,10 @@ public class GameManager : MonoBehaviour
         {
             loadingScreen.SetActive(true);
         }
+
         if (AudioManager.instance != null)
         {
-            AudioManager.instance.Play("LoadingScreen");
-
-            if (!AudioManager.instance.IsPlaying("MenuMusic"))
-            {
-                AudioManager.instance.Play("MenuMusic");
-            }
+            // Play sounds
         }
 
         SceneManager.LoadSceneAsync(SceneName);
@@ -140,7 +105,7 @@ public class GameManager : MonoBehaviour
             errorMessage.GetComponent<Animator>().SetTrigger("ErrorOccurred");
             if (AudioManager.instance != null)
             {
-                AudioManager.instance.Play("HologramDeactivation");
+                
             }
         }
         else
