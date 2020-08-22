@@ -19,32 +19,35 @@ public class GameManager : MonoBehaviour
 
     public GameObject errorMessage;
     public Text errorMessageText;
+    public AnimationClip errorMessageAnimation;
     private PlayData playData;
     public GameObject loadingScreen;
     public GameObject pausedMenu;
     public bool isGamePaused;
-    public bool doesMouseLockOnStart = true;
+    public bool isMouseFreeOnStart = true;
     private Keyboard keyboard;
 
     private void Start()
     {
         keyboard = InputSystem.GetDevice<Keyboard>();
-        ToggleMouseOnOrOff(doesMouseLockOnStart);
+        ToggleMouseOnOrOff(isMouseFreeOnStart);
         playData = PlayData.instance;
         if (pausedMenu != null)
         {
             pausedMenu.SetActive(false);
             isGamePaused = false;
         }
+        errorMessage.SetActive(false);
         Time.timeScale = 1;
     }
 
     private void Update()
     {
-        if (keyboard.escapeKey.wasPressedThisFrame)
+        if (keyboard.escapeKey.wasPressedThisFrame && SceneManager.GetActiveScene().name != "MainMenu")
         {
             TogglePause();
-        }
+        } 
+
     }
 
     public void TogglePause()
@@ -53,7 +56,7 @@ public class GameManager : MonoBehaviour
         {
             if (!isGamePaused)
             {
-                ToggleMouseOnOrOff(true);
+                ToggleMouseOnOrOff(isMouseFreeOnStart);
                 isGamePaused = true;
                 pausedMenu.SetActive(true);
                 Time.timeScale = 0;
@@ -100,6 +103,8 @@ public class GameManager : MonoBehaviour
 
     public void SendErrorMessage(string newErrorMessage)
     {
+        errorMessage.SetActive(true);
+        StartCoroutine(DelayedSetActive(errorMessage, false,errorMessageAnimation.length));
         if (errorMessage != null)
         {
             errorMessageText.text = newErrorMessage;
@@ -130,5 +135,11 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    IEnumerator DelayedSetActive(GameObject gameObject, bool setActive, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        gameObject.SetActive(setActive);
     }
 }
