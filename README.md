@@ -2,7 +2,7 @@
 
 This Template is meant to be used as a basis to help kickstart the creation of games by providing Quality of Life features that are often a pain to code, and potentially very time consuming, but provide lots to the end experience for the user.
 
-*This is **NOT** an asset library, our intention isn't for this to be a catch all for making games, just as a platform or stepping off point for ease of creation in future products*
+*This is **NOT** an asset library, our intention isn't for this to be a catch-all for making games, just as a platform or stepping off point for ease of creation in future products*
 
 Currently, the following features are implemented into the template:
  - Starting Menus scenes and scene management
