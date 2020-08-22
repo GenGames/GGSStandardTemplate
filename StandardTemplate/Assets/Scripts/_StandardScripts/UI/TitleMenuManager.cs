@@ -21,7 +21,7 @@ public class TitleMenuManager : MonoBehaviour
         } 
         else if (keyboard.anyKey.wasPressedThisFrame)
         {
-            GameManager.instance.GoToSceneName("LevelSelection");
+            GameManager.instance.GoToSceneName("MainMenu");
         }
     }
 }

@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour
         if (AudioManager.instance != null)
         {
             // Play sounds
+            
         }
 
         SceneManager.LoadSceneAsync(SceneName);

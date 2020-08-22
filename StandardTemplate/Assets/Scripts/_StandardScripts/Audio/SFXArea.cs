@@ -30,6 +30,7 @@ public class SFXArea : MonoBehaviour
     {
         if (other.gameObject.CompareTag(tagTrigger) || other.gameObject == objectTrigger)
         {
+
             if (AudioManager.instance != null)
             {
                 AudioManager.instance.Play(sound);

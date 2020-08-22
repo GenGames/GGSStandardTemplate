@@ -16,5 +16,6 @@ public class GameplaySceneData : MonoBehaviour
 
     #endregion
 
+    public bool isMenuScene;
     
 }

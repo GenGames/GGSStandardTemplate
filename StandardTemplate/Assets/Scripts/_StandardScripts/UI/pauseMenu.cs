@@ -6,28 +6,98 @@ using UnityEngine.UI;
 
 public class pauseMenu : MonoBehaviour
 {
+	#region Singelton
+
+	public static pauseMenu instance;
+
+	private void Awake()
+	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
+
+	#endregion
+
 	public AudioMixer mainMixer;
 	public Slider[] volumeSliders;
-	public GameObject[] pauseMenuOptions;
+	public float[] currentVolumeSettings;
+	public float minimumVolumeBeforeMute = -30;
+	public float maximumVolume = 5;
 
-	public void OpenMenu(int menuIndex)
+	public Dropdown resolutionDropdown;
+
+	Resolution[] resolutions;
+	public int currentResolutionIndex;
+
+	public bool isFullscreen = true;
+
+	private void Start()
 	{
-		for (int i = 0; i < pauseMenuOptions.Length; i++)
+		resolutions = Screen.resolutions;
+
+		resolutionDropdown.ClearOptions();
+
+		List<string> options = new List<string>();
+
+		for (int i = 0; i < resolutions.Length; i++)
 		{
-			if (menuIndex == i)
+			string option = resolutions[i].width + " x " + resolutions[i].height;
+			options.Add(option);
+
+			if (resolutions[i].width == Screen.currentResolution.width &&
+				resolutions[i].height == Screen.currentResolution.height)
 			{
-				pauseMenuOptions[i].SetActive(true);
-			}
-			else
-			{
-				pauseMenuOptions[i].SetActive(false);
+				currentResolutionIndex = i;
 			}
 		}
+
+		resolutionDropdown.AddOptions(options);
+		resolutionDropdown.value = currentResolutionIndex;
+	}
+
+	public void OnVolumeOpened()
+	{
+		mainMixer.GetFloat("masterVolume", out currentVolumeSettings[0]);
+		mainMixer.GetFloat("musicVolume", out currentVolumeSettings[1]);
+		mainMixer.GetFloat("sfxVolume", out currentVolumeSettings[2]);
+		mainMixer.GetFloat("ambianceVolume", out currentVolumeSettings[3]);
+
+		int i = 0;
+		foreach (Slider slider in volumeSliders)
+		{
+			slider.minValue = minimumVolumeBeforeMute + .1f;
+			slider.maxValue = maximumVolume;
+			slider.value = currentVolumeSettings[i];
+			i++;
+		}
+	}
+
+	public void SetFullscreen(bool isNowFullscreen)
+	{
+		Screen.fullScreen = isNowFullscreen;
+		isFullscreen = isNowFullscreen;
+	}
+
+	public void SetQuality (int qualityLevel)
+	{
+		QualitySettings.SetQualityLevel(qualityLevel);
+	}
+
+	public void SetResolution(int resolutionIndex)
+	{
+		Resolution resolution = resolutions[resolutionIndex];
+		Screen.SetResolution(resolution.width, resolution.height, isFullscreen);
 	}
 
 	public void EditVolume()
 	{
-		if (volumeSliders[0].value < -30)
+		if (volumeSliders[0].value < minimumVolumeBeforeMute)
 		{
 			mainMixer.SetFloat("masterVolume", -80);
 		}
@@ -36,7 +106,7 @@ public class pauseMenu : MonoBehaviour
 			mainMixer.SetFloat("masterVolume", volumeSliders[0].value);
 		}
 
-		if (volumeSliders[1].value < -30)
+		if (volumeSliders[1].value < minimumVolumeBeforeMute)
 		{
 			mainMixer.SetFloat("musicVolume", -80);
 		}
@@ -45,13 +115,22 @@ public class pauseMenu : MonoBehaviour
 			mainMixer.SetFloat("musicVolume", volumeSliders[1].value);
 		}
 
-		if (volumeSliders[2].value < -30)
+		if (volumeSliders[2].value < minimumVolumeBeforeMute)
 		{
 			mainMixer.SetFloat("sfxVolume", -80);
 		}
 		else
 		{
 			mainMixer.SetFloat("sfxVolume", volumeSliders[2].value);
+		}
+
+		if (volumeSliders[3].value < minimumVolumeBeforeMute)
+		{
+			mainMixer.SetFloat("ambianceVolume", -80);
+		}
+		else
+		{
+			mainMixer.SetFloat("ambianceVolume", volumeSliders[3].value);
 		}
 	}
 
