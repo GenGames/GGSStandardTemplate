@@ -10,6 +10,7 @@ public class SFXArea : MonoBehaviour
     public string sound;
     public string tagTrigger;
     public GameObject objectTrigger;
+    public bool doesSoundFallOff = true;
 
     [Range(0.1f, 10000000f)]
     public float soundRangeSquared = 1;
@@ -38,11 +39,14 @@ public class SFXArea : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag(tagTrigger) || other.gameObject == objectTrigger)
+        if (doesSoundFallOff)
         {
-            if (source != null)
+            if (other.gameObject.CompareTag(tagTrigger) || other.gameObject == objectTrigger)
             {
-                source.volume = 1f / (((other.transform.position - transform.position).sqrMagnitude)/ soundRangeSquared);
+                if (source != null)
+                {
+                    source.volume = 1f / (((other.transform.position - transform.position).sqrMagnitude) / soundRangeSquared);
+                }
             }
         }
     }

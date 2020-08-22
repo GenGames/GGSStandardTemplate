@@ -19,11 +19,11 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 1.7
+    m_Value: 0
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.449
     min: 0
     max: 1
   scatter:
@@ -75,7 +75,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.092
+    m_Value: 0.111
     min: 0
     max: 1
   m_MaxSamples:
@@ -279,7 +279,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.236
+    m_Value: 0.169
     min: 0
     max: 1
   smoothness:
