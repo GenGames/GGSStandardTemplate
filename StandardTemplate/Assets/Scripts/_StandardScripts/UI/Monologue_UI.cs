@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class Monologue_UI : MonoBehaviour
 {
+    // ************************* WARNING!!! ****************************
+    // THIS SCRIPT IS IN DEVELOPMENT AND IS NOT READY TO BE UTILIZED YET
+    // ************************* WARNING!!! ****************************
+
+
     #region Singleton
 
     public static Monologue_UI instance;

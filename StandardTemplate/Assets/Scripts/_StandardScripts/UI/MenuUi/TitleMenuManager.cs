@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class TitleMenuManager : MonoBehaviour
 {
     private Keyboard keyboard;
+    private bool isQueriedFromErrorPanel;
+
 
     private void Start()
     {
